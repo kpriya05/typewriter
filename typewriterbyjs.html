@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typewriter By Js</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: serif;
+            background: #000;
+            color: #eee;
+        }
+
+        .container {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container h1 span.typetext {
+            color: orange;
+        }
+
+        .container h1 span.cursor {
+            margin-left: 0.5rem;
+            background-color: #eee;
+            display: inline-block;
+            animation: blink 1s infinite;
+            width: 4px;
+        }
+
+        @keyframes blink {
+            0% {
+                background-color: #ccc;
+            }
+
+            49% {
+                background-color: #ccc;
+            }
+
+            50% {
+                background-color: transparent;
+            }
+
+            99% {
+                background-color: transparent;
+            }
+
+            100% {
+                background-color: #ccc;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container">
+        <h1>Coding is <span class="typetext"></span><span class="cursor">&nbsp;</span></h1>
+    </div>
+
+    <script>
+        const typeTextSpan = document.querySelector(".typetext");
+        const cursorSpan = document.querySelector(".cursor");
+
+        const textArray = ["FUN", "LIFE", "A JOURNY", "AWESOME"];
+
+        const typingDelay = 200;
+        const erasingDelay = 100;
+        const newTextDelay = 2000;
+
+        let textArrayIndex = 0;
+        let charIndex = 0;
+
+        // textArray[0]
+
+        function type() {
+            if (charIndex < textArray[textArrayIndex].length) {
+                if (!cursorSpan.classList.contains("typing"))
+                    cursorSpan.classList.add("typing");
+                typeTextSpan.textContent += textArray[textArrayIndex].charAt(charIndex);
+                charIndex++;
+                console.log("charIndex", charIndex)
+                setTimeout(type, typingDelay);
+            }
+            else {
+                cursorSpan.classList.remove("typing");
+                setTimeout(erase, newTextDelay);
+            }
+        }
+
+        function erase() {
+            if (charIndex > 0) {
+                if (!cursorSpan.classList.contains("typing"))
+                    cursorSpan.classList.add("typing");
+                typeTextSpan.textContent = textArray[textArrayIndex].substring(0, charIndex - 1);
+                charIndex--;
+                setTimeout(erase, erasingDelay);
+            }
+            else {
+                cursorSpan.classList.remove("typing");
+                textArrayIndex++;
+                if (textArrayIndex >= textArray.length)
+                    textArrayIndex = 0;
+                setTimeout(type, typingDelay + 1100);
+            }
+        }
+        document.addEventListener("DOMContentLoaded",
+            function () {
+                console.log("DOMContentLoaded")
+                if (textArray.length) {
+                    setTimeout(type, newTextDelay + 250)
+                };
+            });
+    </script>
+</body>
+
+</html>
